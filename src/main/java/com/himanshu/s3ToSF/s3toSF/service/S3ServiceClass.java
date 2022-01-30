@@ -3,6 +3,7 @@ package com.himanshu.s3ToSF.s3toSF.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,12 @@ public class S3ServiceClass {
 	public String getS3File() {
 		logger.info("----Inside getS3File method--------");
 		AmazonS3 s3client = getS3Client();
-		String keyName = fileName;
+		// keyname = file_YYYYMMDD.txt;
+		Calendar cal = Calendar.getInstance();
+		int date = cal.get(Calendar.DATE);
+		int month = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
+		String keyName = fileName + "_" + year + month + date + ".txt";
 		S3Object o = s3client.getObject(bucketName, keyName);
 		S3ObjectInputStream s3is = o.getObjectContent();
 		logger.info("Retrieved from s3----" + s3is);
